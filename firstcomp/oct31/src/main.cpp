@@ -1,10 +1,13 @@
 #include "main.h"
+#include "paths.h"
 
 /**
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
+ * 
+ * hihihi this is the FULLY FUNCTIONAL AUTON FULLLY DOCUMENTED WITH ahem AHEM very CLEAR COMMENTS TRUST
  */
 void on_center_button() {
 	static bool pressed = false;
