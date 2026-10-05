@@ -119,7 +119,7 @@ void autontemplate() {
 
 void opcontrol() { 
     while (true) {
-        //arcade drive from coding workshop I forgor which one Cassie prefers
+        //arcade drive from coding workshop I don't know which one youall like
         int dir = master.get_analog(ANALOG_LEFT_Y);
         int turn = master.get_analog(ANALOG_LEFT_X);
         
