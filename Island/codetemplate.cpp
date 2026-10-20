@@ -6,12 +6,13 @@
 
 // Defining ports
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup right_mg({10, 7, 18}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
-pros::MotorGroup left_mg({-11,-4, -14}, pros::MotorGearset::blue); //negative means it spins the other way.
+pros::MotorGroup right_mg({10, 8, 6}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
+pros::MotorGroup left_mg({-20, -18, -16}, pros::MotorGearset::blue); //negative means it spins the other way.
 
 pros::ADIDigitalOut piston('A'); //piston port
 
-pros::Motor motor(-20, pros::MotorGearset::blue); //blue cartrdge
+pros::Motor rightliftmotor(-9, pros::MotorGearset::blue); //blue cartrdge(???????)
+pros::Motor lefttliftmotor(19, pros::MotorGearset::blue); //blue cartrdge
 
 // Configure drivetrain - we will need to calibrate this
 lemlib::Drivetrain drivetrain(&left_mg,
@@ -24,8 +25,9 @@ lemlib::Drivetrain drivetrain(&left_mg,
 
 pros::Imu imu(12); //IMU port (inertial sensor)
 
-pros::Rotation vertical_encoder(5); //odom wheel port
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
+pros::Rotation odom(3); //odom wheel port
+pros::Rotation liftrotationsensor(4); //rotation sensor
+lemlib::TrackingWheel vertical_tracking_wheel(&odom, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
                             nullptr, // vertical tracking wheel 2 (we don't have one)
                             nullptr ,// horizontal tracking wheel 1 (we don't have one)
