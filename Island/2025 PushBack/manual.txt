@@ -1,0 +1,31 @@
+<RSC2> Scoring Robot Skills Matches. For each Robot Skills Match, Teams are awarded a score based on the following rules and scoring table:
+
+Teams will receive points for all Scored Blocks, regardless of color.
+  A Block is not considered Scored if it is in contact with a Robot at the end of the Match.
+
+A Long Goal must include one or more of the following to be considered filled in a Robot Skills Match:
+  Three Blocks of the same color fully contained between the inner edges of the Control Zone tape lines
+  Four Blocks of the same color fully contained between the outer edges of the Control Zone tape lines.
+
+The Team will earn points for a cleared Park Zone if no Blocks are in contact with the Floor inside the Park Zone at the end of the Match.
+
+The Team will earn points for a cleared Loader if no Blocks are within that Loader at the end of the Match.
+
+The Team will earn points for a Parked Robot if the Robot has moved during the Match, is within the red Alliance Park Zone, and meets all criteria of rule <SC4> at the end of the Match.
+
+Each Block Scored in a Goal - 1 Point
+Each filled Control Zone in a Long Goal - 5 Points
+Each filled Control Zone in a Center Goal - 10 Points
+Each Cleared Park Zone - 5 Points
+Each Cleared Loader - 5 Points
+Parked Robot - 15 Points
+
+<RSC3> Robot and Field setup for Skills Matches. The Robot and Field are set up the same as for a Head-to-Head Match (e.g., the Robot must meet the requirements of <SG1>), with the following modifications:
+  In Autonomous Coding Skills Matches, the VEX GPS code strip must be installed on the Field.
+  The Robot must start the Robot Skills Match in a legal starting position for the red Alliance.
+  All Drive Team Members must remain in the red Alliance Station for the duration of the Match.
+  One red Block must be used as a Preload in accordance with <SG5>.
+  Revised Block layout. 36 Blocks begin the Match in unscored positions on the Field and 24 Blocks begin in the Loaders, as shown in Figure RSC3-1.
+  Robots may move freely about the Field after the start of the Match.
+  Robot Skills Matches do not include Match Load Blocks.
+Robot Skills Matches do not include Match Load Blocks.

@@ -1,0 +1,47 @@
+Robot Skills Challenge Rules
+
+<RSC1> Standard rules apply in most cases. All rules from previous sections apply to Robot Skills Matches,
+unless otherwise specified in this section.
+    a. Removing Scoring Objects from the Field in a Robot Skills Match is not a Violation. Scoring Objects that
+    leave the Field cannot be returned.
+    b. In the Robot Skills Challenge, the standard definition of Match Affecting does not apply, because there is no
+    winner or loser. When evaluating whether a rule Violation should be classified as a Major Violation or Minor
+    Violation in the context of this criteria, the term “score affecting” can be substituted for “Match Affecting.” A
+    Violation is considered “score affecting” if it results in a net increase of that Team’s score at the end of the
+    Match.
+    c. Violations of <GG>, <SG>, and <RSC> rules that occur during a Robot Skills Match should only affect the
+    outcome of that Match and should not be considered when determining whether a Violation has been
+    repeated during the event.
+
+<RSC2> Match play is different in Robot Skills Matches.
+    a. The Robot must start the Robot Skills Match in a legal starting position in the Quadrant adjacent to the red
+    Alliance Station.
+    b. All Drive Team Members must remain in the red Alliance Station for the duration of the Match.
+    c. One red/yellow Pin must be used as a Preload in accordance with <SG5>.
+    d. Teams may introduce Match Load Scoring Objects at any time during a Robot Skills Match, but only through
+    red Alliance Loaders.
+    e. Robots can add or remove Pins or Cups on all Goals.
+    f. Robots may move freely about the Field after the start of the Match.
+
+<RSC3> Scoring Robot Skills Matches. For each Robot Skills Match, Teams are awarded a score based on the
+following rules and scoring table:
+Each Scored red or blue Pin             5 points
+Each Scored yellow Pin                  10 points
+Each Robot ending in the Midfield       8 points
+
+    a. Teams can earn points for Pins of any color.
+        i. Red Pins can only be Scored if they are Placed in a red Quadrant or in the Midfield.
+        ii. Blue Pins can only be Scored if they are Placed in a blue Quadrant or in the Midfield.
+        iii. Yellow Pins can only be Scored if they are Owned.
+            1. Toggles only confer Ownership of Pins when the Toggle matches the color of its Quadrant (i.e.,
+            yellow Pins Placed in a red Quadrant with a Toggle that is set to blue are not Owned and will not earn
+            any points.
+            2. Yellow Pins Placed in the Midfield are Owned if a Robot ends the Match in the Midfield. (See <SC6>).
+    b. The Team will earn points for a Robot ending in the Midfield. (See <SC6>.)
+
+<RSC4> Field setup for Skills Matches. The Field is set up differently than a Head-to-Head Match, with the
+following modifications:
+    a. In Autonomous Coding Skills Matches, the VEX GPS code strip must be installed on the Field.
+    b. Revised Match Loads. Three (3) red/yellow Pins, four (4) blue/yellow Pins, and seven (7) Cups begin off the
+    Field as Match Loads.
+    c. All Goals start the Match empty with no Placed Pins.
