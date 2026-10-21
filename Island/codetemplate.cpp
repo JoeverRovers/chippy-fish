@@ -79,9 +79,7 @@ void wait(int time_in_milliseconds) {
     pros::delay(time_in_milliseconds);
 }
 void movemotor(int voltage, int time_in_milliseconds) {
-    motor.move_voltage(voltage);
     wait(time_in_milliseconds);
-    motor.move_voltage(0); blockStopper.set_value(false); //hood UP
 }
 void retractpiston(pros::ADIDigitalOut piston) {
     piston.set_value(false);
@@ -127,13 +125,18 @@ void opcontrol() {
         
         right_mg.move(dir - turn);
         right_mg.move(dir + turn);
+        
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+            rightliftmotor.move(127);
+            lefttliftmotor.move(127);
+        }
 
         pros::delay(20);
     }
 }
 
 void autonomous() {
-    autontemplate()
+    autontemplate();
 }
 
 #pragma endregion real
