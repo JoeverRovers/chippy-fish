@@ -1,4 +1,5 @@
 #include "main.h"
+#include "lemlib/api.hpp"
 #include <cmath>
 
 #pragma region setup
@@ -13,79 +14,79 @@ pros::ADIDigitalOut piston('A'); //piston port
 pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
 pros::Motor lefttliftmotor(11, pros::MotorGearset::red); //red
 
-// // Configure drivetrain - we will need to calibrate this
-// lemlib::Drivetrain drivetrain(&left_mg,
-//                               &right_mg,
-//                               11.75, // track width(inches)
-//                               lemlib::Omniwheel::NEW_325, // using new 3.25" omniwheels
-//                               450, // drivetrain rpm
-//                               2 // horizontal drift
-// );
+// Configure drivetrain - we will need to calibrate this
+lemlib::Drivetrain drivetrain(&left_mg,
+                              &right_mg,
+                              11.75, // track width(inches)
+                              lemlib::Omniwheel::NEW_325, // using new 3.25" omniwheels
+                              450, // drivetrain rpm
+                              2 // horizontal drift
+);
 
-// pros::Imu imu(12); //IMU port (inertial sensor)
+pros::Imu imu(12); //IMU port (inertial sensor)
 
-// pros::Rotation odom(3); //odom wheel port
-// pros::Rotation liftrotationsensor(4); //rotation sensor
-// lemlib::TrackingWheel vertical_tracking_wheel(&odom, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
-// lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
-//                             nullptr, // vertical tracking wheel 2 (we don't have one)
-//                             nullptr ,// horizontal tracking wheel 1 (we don't have one)
-//                             nullptr, // horizontal tracking wheel 2 (we don't have one)
-//                             &imu // inertial sensor
-// );
+pros::Rotation odom(3); //odom wheel port
+pros::Rotation liftrotationsensor(4); //rotation sensor
+lemlib::TrackingWheel vertical_tracking_wheel(&odom, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
+lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
+                            nullptr, // vertical tracking wheel 2 (we don't have one)
+                            nullptr ,// horizontal tracking wheel 1 (we don't have one)
+                            nullptr, // horizontal tracking wheel 2 (we don't have one)
+                            &imu // inertial sensor
+);
 
-// //calibrate this
-// lemlib::ControllerSettings lateral_controller(5, // proportional gain (kP)
-//                                               0, // integral gain (kI)
-//                                               10, // derivative gain (kD)
-//                                               3, // anti windup
-//                                               1, // small error range (inches)
-//                                               100, // small error range timeout (milliseconds)
-//                                               3, // large error range (inches)
-//                                               500, // large error range timeout (milliseconds)
-//                                               20 // maximum acceleration (slew)
-// );
+//calibrate this
+lemlib::ControllerSettings lateral_controller(5, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              10, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range (inches)
+                                              100, // small error range timeout (milliseconds)
+                                              3, // large error range (inches)
+                                              500, // large error range timeout (milliseconds)
+                                              20 // maximum acceleration (slew)
+);
 
-// // :(
-// lemlib::ControllerSettings angular_controller(3, // proportional gain (kP)
-//                                               0, // integral gain (kI)
-//                                               10, // derivative gain (kD)
-//                                               3, // anti windup
-//                                               1, // small error range (inches)
-//                                               100, // small error range timeout (milliseconds)
-//                                               3, // large error range (inches)
-//                                               500, // large error range timeout (milliseconds)
-//                                               0 // maximum acceleration (slew)
-// );
+// :(
+lemlib::ControllerSettings angular_controller(3, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              10, // derivative gain (kD)
+                                              3, // anti windup
+                                              1, // small error range (inches)
+                                              100, // small error range timeout (milliseconds)
+                                              3, // large error range (inches)
+                                              500, // large error range timeout (milliseconds)
+                                              0 // maximum acceleration (slew)
+);
 
-// lemlib::Chassis chassis(drivetrain, // drivetrain settings
-//                         lateral_controller, // lateral PID settings
-//                         angular_controller, // angular PID settings
-//                         sensors // odometry sensors
-// );
+lemlib::Chassis chassis(drivetrain, // drivetrain settings
+                        lateral_controller, // lateral PID settings
+                        angular_controller, // angular PID settings
+                        sensors // odometry sensors
+);
 
-// #pragma endregion setup
+#pragma endregion setup
 
 
-// //setup functions
-// void turntoheading(int direction_in_degrees, int time_in_milliseconds) {
-//     chassis.turnToHeading(direction_in_degrees, time_in_milliseconds); pros::delay(time_in_milliseconds);
-// }
-// void movetopoint(int x_in_inches, int y_in_inches, int time_in_milliseconds) {
-//     chassis.moveToPoint(x_in_inches, y_in_inches, time_in_milliseconds); pros::delay(time_in_milliseconds);
-// }
-// void wait(int time_in_milliseconds) {
-//     pros::delay(time_in_milliseconds);
-// }
-// void movemotor(int voltage, int time_in_milliseconds) {
-//     wait(time_in_milliseconds);
-// }
-// void retractpiston(pros::ADIDigitalOut piston) {
-//     piston.set_value(false);
-// }
-// void extendpiston(pros::ADIDigitalOut piston) {
-//     piston.set_value(true);
-// }
+//setup functions
+void turntoheading(int direction_in_degrees, int time_in_milliseconds) {
+    chassis.turnToHeading(direction_in_degrees, time_in_milliseconds); pros::delay(time_in_milliseconds);
+}
+void movetopoint(int x_in_inches, int y_in_inches, int time_in_milliseconds) {
+    chassis.moveToPoint(x_in_inches, y_in_inches, time_in_milliseconds); pros::delay(time_in_milliseconds);
+}
+void wait(int time_in_milliseconds) {
+    pros::delay(time_in_milliseconds);
+}
+void movemotor(int voltage, int time_in_milliseconds) {
+    wait(time_in_milliseconds);
+}
+void retractpiston(pros::ADIDigitalOut piston) {
+    piston.set_value(false);
+}
+void extendpiston(pros::ADIDigitalOut piston) {
+    piston.set_value(true);
+}
 
 
 void autontemplate() {
