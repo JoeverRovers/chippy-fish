@@ -10,8 +10,8 @@ pros::MotorGroup left_mg({-20, -18, -16}, pros::MotorGearset::blue); //negative 
 
 pros::ADIDigitalOut piston('A'); //piston port
 
-pros::Motor rightliftmotor(-9, pros::MotorGearset::red); // red
-pros::Motor lefttliftmotor(19, pros::MotorGearset::red); //red
+pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
+pros::Motor lefttliftmotor(11, pros::MotorGearset::red); //red
 
 // // Configure drivetrain - we will need to calibrate this
 // lemlib::Drivetrain drivetrain(&left_mg,
@@ -129,7 +129,10 @@ void opcontrol() {
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
         }
-
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+            rightliftmotor.move(-127);
+            lefttliftmotor.move(-127);
+        }
         pros::delay(20);
     }
 }
