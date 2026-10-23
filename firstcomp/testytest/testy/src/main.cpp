@@ -6,8 +6,12 @@
 
 // Defining ports
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup right_mg({10, 8, 6}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
-pros::MotorGroup left_mg({-20, -18, -16}, pros::MotorGearset::blue); //negative means it spins the other way.
+pros::MotorGroup right_mg({10, 2, 6}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
+pros::MotorGroup left_mg({-20, -14, -17}, pros::MotorGearset::blue); //negative means it spins the other way.
+// port 15, 16 = bad
+// port 5 and 6 are bad?!
+// port 9 bad??
+// need to update the colours
 
 pros::ADIDigitalOut piston('A'); //piston port
 
@@ -19,14 +23,14 @@ lemlib::Drivetrain drivetrain(&left_mg,
                               &right_mg,
                               11.75, // track width(inches)
                               lemlib::Omniwheel::NEW_325, // using new 3.25" omniwheels
-                              450, // drivetrain rpm
+                              360, // drivetrain rpm
                               2 // horizontal drift
 );
 
-pros::Imu imu(12); //IMU port (inertial sensor)
+pros::Imu imu(4); //IMU port (inertial sensor)
 
-pros::Rotation odom(3); //odom wheel port
-pros::Rotation liftrotationsensor(4); //rotation sensor
+pros::Rotation odom(12); //odom wheel port
+// pros::Rotation liftrotationsensor(4); //rotation sensor
 lemlib::TrackingWheel vertical_tracking_wheel(&odom, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
                             nullptr, // vertical tracking wheel 2 (we don't have one)
@@ -66,6 +70,62 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
 );
 
 #pragma endregion setup
+
+
+void initialize() {
+    pros::lcd::initialize();
+    pros::lcd::print(0, "19109G");
+    right_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
+    left_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
+
+    imu.reset();
+
+    while(imu.is_calibrating()){
+        pros::delay(10);
+    }
+    chassis.calibrate(); 
+    chassis.setPose(0, 0, 0);
+    // while (true) {
+    //     lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
+    //     pros::lcd::print(0, "x: %f", pose.x); // print the x position
+    //     pros::lcd::print(1, "y: %f", pose.y); // print the y position
+    //     pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
+    //     pros::delay(10);
+
+    // }
+    pros::delay(10);
+
+}
+
+/**
+ * Runs while the robot is in the disabled state of Field Management System or
+ * the VEX Competition Switch, following either autonomous or opcontrol. When
+ * the robot is enabled, this task will exit.
+ */
+void disabled() {}
+
+/**
+ * Runs after initialize(), and before autonomous when connected to the Field
+ * Management System or the VEX Competition Switch. This is intended for
+ * competition-specific initialization routines, such as an autonomous selector
+ * on the LCD.
+ *
+ * This task will exit when the robot is enabled and autonomous or opcontrol
+ * starts.
+ */
+void competition_initialize() {}
+
+/**
+ * Runs the user autonomous code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the autonomous
+ * mode. Alternatively, this function may be called in initialize or opcontrol
+ * for non-competition testing purposes.
+ *
+ * If the robot is disabled or communications is lost, the autonomous task
+ * will be stopped. Re-enabling the robot will restart the task, not re-start it
+ * from where it left off.
+ */
 
 
 //setup functions
@@ -124,7 +184,7 @@ void opcontrol() {
         int turn = master.get_analog(ANALOG_LEFT_X);
         
         right_mg.move(dir - turn);
-        right_mg.move(dir + turn);
+        left_mg.move(dir + turn);
         
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             rightliftmotor.move(127);
