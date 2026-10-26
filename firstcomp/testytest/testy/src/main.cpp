@@ -6,7 +6,7 @@
 
 // Defining ports
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup right_mg({10, 2, 6}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
+pros::MotorGroup right_mg({10, 2, 8}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
 pros::MotorGroup left_mg({-20, -14, -17}, pros::MotorGearset::blue); //negative means it spins the other way.
 // port 15, 16 = bad
 // port 5 and 6 are bad?!
@@ -77,6 +77,8 @@ void initialize() {
     pros::lcd::print(0, "19109G");
     right_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
     left_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
+    rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
     imu.reset();
 
@@ -180,8 +182,14 @@ void autontemplate() {
 void opcontrol() { 
     while (true) {
         //arcade drive from coding workshop I don't know which one youall like
+        // printf("right\n", rightliftmotor.get_position());
+        // printf("leftt\n", lefttliftmotor.get_position());
+        pros::lcd::initialize();
+        pros::lcd::print(1, "hi");
+        // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
+
         int dir = master.get_analog(ANALOG_LEFT_Y);
-        int turn = master.get_analog(ANALOG_LEFT_X);
+        int turn = master.get_analog(ANALOG_RIGHT_X);
         
         right_mg.move(dir - turn);
         left_mg.move(dir + turn);
@@ -190,10 +198,15 @@ void opcontrol() {
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
         }
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
             rightliftmotor.move(-127);
             lefttliftmotor.move(-127);
         }
+        else{
+            rightliftmotor.move(0);
+            lefttliftmotor.move(0);
+        }
+
         pros::delay(20);
     }
 }
