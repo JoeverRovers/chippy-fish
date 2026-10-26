@@ -184,16 +184,21 @@ void opcontrol() {
         //arcade drive from coding workshop I don't know which one youall like
         // printf("right\n", rightliftmotor.get_position());
         // printf("leftt\n", lefttliftmotor.get_position());
-        pros::lcd::initialize();
         pros::lcd::print(1, "hi");
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
-
         int dir = master.get_analog(ANALOG_LEFT_Y);
         int turn = master.get_analog(ANALOG_RIGHT_X);
         
         right_mg.move(dir - turn);
         left_mg.move(dir + turn);
-        
+        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+            rightliftmotor.move_absolute(10.0,100);
+            lefttliftmotor.move_absolute(10.0,100);
+        }
+        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
+            rightliftmotor.move_absolute(0,100);
+            lefttliftmotor.move_absolute(0,100);
+        }
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
