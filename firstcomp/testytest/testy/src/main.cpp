@@ -12,11 +12,12 @@ pros::MotorGroup left_mg({-20, -14, -17}, pros::MotorGearset::blue); //negative 
 // port 5 and 6 are bad?!
 // port 9 bad??
 // need to update the colours
-
+pros::Distance clawsensor(18);
 pros::ADIDigitalOut piston('A'); //piston port
 
 pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
 pros::Motor lefttliftmotor(11, pros::MotorGearset::red); //red
+
 
 // Configure drivetrain - we will need to calibrate this
 lemlib::Drivetrain drivetrain(&left_mg,
@@ -80,6 +81,9 @@ void initialize() {
     rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
+
+    // rightliftmotor.set_zero_position();
+    // lefttliftmotor.set_zero_position();
     imu.reset();
 
     while(imu.is_calibrating()){
@@ -180,26 +184,39 @@ void autontemplate() {
 #pragma region real
 
 void opcontrol() { 
+
     while (true) {
+
+
         //arcade drive from coding workshop I don't know which one youall like
         // printf("right\n", rightliftmotor.get_position());
         // printf("leftt\n", lefttliftmotor.get_position());
-        pros::lcd::print(1, "hi");
+        // pros::lcd::print(1,"right" + (int)(rightliftmotor.get_position()));
+        // pros::lcd::print(2,"left" + (int)(lefttliftmotor.get_position()));
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
+        printf("distance\n", clawsensor.get());
+        printf("confidence\n", clawsensor.get_confidence());
+        printf("size\n", clawsensor.get_object_size());
+
+        // pros::lcd::print(3,"distance sensor : " + clawsensor.get());
         int dir = master.get_analog(ANALOG_LEFT_Y);
         int turn = master.get_analog(ANALOG_RIGHT_X);
         
         right_mg.move(dir - turn);
         left_mg.move(dir + turn);
-        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
-            rightliftmotor.move_absolute(10.0,100);
-            lefttliftmotor.move_absolute(10.0,100);
-        }
+        // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        //     rightliftmotor.move_absolute(-100.0,100);
+        //     lefttliftmotor.move_absolute(100.0,100);
+        //     while (!((rightliftmotor.get_position() > -105) && (rightliftmotor.get_position() < 95))) {
+        //     // Continue running this loop as long as the motor is not within +-5 units of its goal
+        //     pros::delay(2);
+        //     }
+        // }
         if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
             rightliftmotor.move_absolute(0,100);
             lefttliftmotor.move_absolute(0,100);
         }
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
         }
@@ -212,7 +229,7 @@ void opcontrol() {
             lefttliftmotor.move(0);
         }
 
-        pros::delay(20);
+        pros::delay(200);
     }
 }
 
