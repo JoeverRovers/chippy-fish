@@ -212,6 +212,7 @@ void autonright(){
 
 #pragma region real
 
+bool sensortesty = false;
 void opcontrol() { 
 
     while (true) {
@@ -259,11 +260,24 @@ void opcontrol() {
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
             autonleft(1);
         }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
+            sensortesty = !sensortesty;
+
+        }
         else{
             rightliftmotor.move(0);
             lefttliftmotor.move(0);
         }
 
+        if(sensortesty){
+            if(clawsensor.get() < 40){
+                // 40 mm = 4 cm
+                closeclaw();
+            }
+            else{
+                openclaw();
+            }
+        }
         pros::delay(20);
     }
 }
