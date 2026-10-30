@@ -269,7 +269,8 @@ void opcontrol() {
 }
 
 void autonomous() {
-    autontemplate();
+    // RMEMEER TO FIX THIS!!
+    autonleft(1);
 }
 
 #pragma endregion real
