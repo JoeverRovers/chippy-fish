@@ -8,6 +8,8 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup right_mg({10, 2, 8}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
 pros::MotorGroup left_mg({-20, -14, -17}, pros::MotorGearset::blue); //negative means it spins the other way.
+
+pros:: MotorGroup toggles({12,13}, pros::MotorGearset::green);
 // port 15, 16 = bad
 // port 5 and 6 are bad?!
 // port 9 bad??
@@ -70,6 +72,15 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         sensors // odometry sensors
 );
 
+void openclaw(){
+    piston.set_value(true);
+}
+
+void closeclaw(){
+    piston.set_value(false);
+}
+// might need to swap ,n ot sure
+
 #pragma endregion setup
 
 
@@ -81,7 +92,7 @@ void initialize() {
     rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
-
+    piston.set_value(false); // claw is piston
     // rightliftmotor.set_zero_position();
     // lefttliftmotor.set_zero_position();
     imu.reset();
@@ -135,12 +146,12 @@ void competition_initialize() {}
 
 
 //setup functions
-void turntoheading(int direction_in_degrees, int time_in_milliseconds) {
-    chassis.turnToHeading(direction_in_degrees, time_in_milliseconds); pros::delay(time_in_milliseconds);
-}
-void movetopoint(int x_in_inches, int y_in_inches, int time_in_milliseconds) {
-    chassis.moveToPoint(x_in_inches, y_in_inches, time_in_milliseconds); pros::delay(time_in_milliseconds);
-}
+// void turntoheading(int direction_in_degrees, int time_in_milliseconds) {
+//     chassis.turnToHeading(direction_in_degrees, time_in_milliseconds); pros::delay(time_in_milliseconds);
+// }
+// void movetopoint(int x_in_inches, int y_in_inches, int time_in_milliseconds) {
+//     chassis.moveToPoint(x_in_inches, y_in_inches, time_in_milliseconds); pros::delay(time_in_milliseconds);
+// }
 void wait(int time_in_milliseconds) {
     pros::delay(time_in_milliseconds);
 }
@@ -154,6 +165,10 @@ void extendpiston(pros::ADIDigitalOut piston) {
     piston.set_value(true);
 }
 
+
+void openclaw(){
+    
+}
 
 void autontemplate() {
     /*
@@ -187,20 +202,18 @@ void opcontrol() {
 
     while (true) {
 
-
-        //arcade drive from coding workshop I don't know which one youall like
         // printf("right\n", rightliftmotor.get_position());
         // printf("leftt\n", lefttliftmotor.get_position());
         // pros::lcd::print(1,"right" + (int)(rightliftmotor.get_position()));
         // pros::lcd::print(2,"left" + (int)(lefttliftmotor.get_position()));
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
-        printf("distance\n", clawsensor.get());
-        printf("confidence\n", clawsensor.get_confidence());
-        printf("size\n", clawsensor.get_object_size());
+        printf("distance%d", clawsensor.get());
+        printf("confidence%d", clawsensor.get_confidence());
+        printf("size%d", clawsensor.get_object_size());
 
         // pros::lcd::print(3,"distance sensor : " + clawsensor.get());
-        int dir = master.get_analog(ANALOG_LEFT_Y);
-        int turn = master.get_analog(ANALOG_RIGHT_X);
+        int dir = master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_Y);
+        int turn = master.get_analog(ANALOG_LEFT_X);
         
         right_mg.move(dir - turn);
         left_mg.move(dir + turn);
@@ -213,14 +226,16 @@ void opcontrol() {
         //     }
         // }
         if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
-            rightliftmotor.move_absolute(0,100);
-            lefttliftmotor.move_absolute(0,100);
+            openclaw();
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+            closeclaw();
+        }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
             rightliftmotor.move(-127);
             lefttliftmotor.move(-127);
         }
