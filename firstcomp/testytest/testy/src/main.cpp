@@ -72,14 +72,6 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         sensors // odometry sensors
 );
 
-void openclaw(){
-    piston.set_value(true);
-}
-
-void closeclaw(){
-    piston.set_value(false);
-}
-// might need to swap ,n ot sure
 
 #pragma endregion setup
 
@@ -146,29 +138,15 @@ void competition_initialize() {}
 
 
 //setup functions
-// void turntoheading(int direction_in_degrees, int time_in_milliseconds) {
-//     chassis.turnToHeading(direction_in_degrees, time_in_milliseconds); pros::delay(time_in_milliseconds);
-// }
-// void movetopoint(int x_in_inches, int y_in_inches, int time_in_milliseconds) {
-//     chassis.moveToPoint(x_in_inches, y_in_inches, time_in_milliseconds); pros::delay(time_in_milliseconds);
-// }
-void wait(int time_in_milliseconds) {
-    pros::delay(time_in_milliseconds);
-}
-void movemotor(int voltage, int time_in_milliseconds) {
-    wait(time_in_milliseconds);
-}
-void retractpiston(pros::ADIDigitalOut piston) {
-    piston.set_value(false);
-}
-void extendpiston(pros::ADIDigitalOut piston) {
+void openclaw(){
     piston.set_value(true);
 }
 
-
-void openclaw(){
-    
+void closeclaw(){
+    piston.set_value(false);
 }
+// might need to swap ,n ot sure
+
 
 void autontemplate() {
     /*
@@ -244,7 +222,7 @@ void opcontrol() {
             lefttliftmotor.move(0);
         }
 
-        pros::delay(200);
+        pros::delay(20);
     }
 }
 
