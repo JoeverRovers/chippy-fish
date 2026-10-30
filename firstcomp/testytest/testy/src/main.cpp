@@ -142,11 +142,11 @@ void competition_initialize() {}
 
 //setup functions
 void openclaw(){
-    piston.set_value(true);
+    piston.set_value(false);
 }
 
 void closeclaw(){
-    piston.set_value(false);
+    piston.set_value(true);
 }
 
 void firstheight(){
