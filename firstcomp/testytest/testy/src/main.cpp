@@ -87,7 +87,7 @@ void initialize() {
     rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
-    piston.set_value(false); // start claw closed
+    piston.set_value(true);
     // rightliftmotor.set_zero_position();
     // lefttliftmotor.set_zero_position();
     imu.reset();
@@ -235,7 +235,7 @@ void opcontrol() {
         printf("distance%d", clawsensor.get());
         printf("confidence%d ", clawsensor.get_confidence());
         printf("size%d ", clawsensor.get_object_size());
-        printf("lIFT Position: %lf",rightliftmotor.get_position());
+        printf("lIFT Position: %lf\n",rightliftmotor.get_position());
         // printf("lIFT angle: %lf\n",spinny.get_angle());
 
         // wonky drive
