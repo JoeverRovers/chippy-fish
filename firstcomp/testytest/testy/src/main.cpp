@@ -15,6 +15,9 @@ pros:: MotorGroup toggles({12,13}, pros::MotorGearset::green);
 // port 9 bad??
 // need to update the colours
 pros::Distance clawsensor(18);
+
+pros::Rotation spinny(16); //odom wheel port
+
 pros::ADIDigitalOut piston('A'); //piston port
 
 pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
@@ -43,9 +46,9 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 );
 
 //calibrate this
-lemlib::ControllerSettings lateral_controller(5, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(1, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              10, // derivative gain (kD)
+                                              1, // derivative gain (kD)
                                               3, // anti windup
                                               1, // small error range (inches)
                                               100, // small error range timeout (milliseconds)
@@ -84,7 +87,7 @@ void initialize() {
     rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
-    closeclaw();
+    piston.set_value(false); // start claw closed
     // rightliftmotor.set_zero_position();
     // lefttliftmotor.set_zero_position();
     imu.reset();
@@ -139,11 +142,11 @@ void competition_initialize() {}
 
 //setup functions
 void openclaw(){
-    piston.set_value(false);
+    piston.set_value(true);
 }
 
 void closeclaw(){
-    piston.set_value(true);
+    piston.set_value(false);
 }
 
 void firstheight(){
@@ -210,6 +213,13 @@ void autonright(){
     autonleft(-1);
 }
 
+void PIDtuna(){
+    // set position to x:0, y:0, heading:0
+    chassis.setPose(0, 0, 0);
+    // turn to face heading 90 with a very long timeout
+    // chassis.turnToHeading(90, 100000);
+    chassis.moveToPoint(0, 24, 4000);
+}
 #pragma region real
 
 bool sensortesty = false;
@@ -223,9 +233,10 @@ void opcontrol() {
         // pros::lcd::print(2,"left" + (int)(lefttliftmotor.get_position()));
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
         printf("distance%d", clawsensor.get());
-        printf("confidence%d", clawsensor.get_confidence());
-        printf("size%d\n", clawsensor.get_object_size());
-
+        printf("confidence%d ", clawsensor.get_confidence());
+        printf("size%d ", clawsensor.get_object_size());
+        printf("lIFT Position: %lf",rightliftmotor.get_position());
+        // printf("lIFT angle: %lf\n",spinny.get_angle());
 
         // wonky drive
         int dir = master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_Y);
@@ -247,7 +258,7 @@ void opcontrol() {
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
             closeclaw();
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             toggles.move(127);
         }
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
@@ -258,16 +269,19 @@ void opcontrol() {
             rightliftmotor.move(-127);
             lefttliftmotor.move(-127);
         }
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+            PIDtuna();
+        }
         else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
             autonright();
         }
         else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
             autonleft(1);
         }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-            sensortesty = !sensortesty;
+        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+        //     sensortesty = !sensortesty;
 
-        }
+        // }
         else{
             rightliftmotor.move(0);
             lefttliftmotor.move(0);
