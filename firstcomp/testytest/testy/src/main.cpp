@@ -84,7 +84,7 @@ void initialize() {
     rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
-    piston.set_value(false); // claw is piston
+    closeclaw();
     // rightliftmotor.set_zero_position();
     // lefttliftmotor.set_zero_position();
     imu.reset();
@@ -139,11 +139,11 @@ void competition_initialize() {}
 
 //setup functions
 void openclaw(){
-    piston.set_value(true);
+    piston.set_value(false);
 }
 
 void closeclaw(){
-    piston.set_value(false);
+    piston.set_value(true);
 }
 
 void firstheight(){
@@ -224,7 +224,8 @@ void opcontrol() {
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
         printf("distance%d", clawsensor.get());
         printf("confidence%d", clawsensor.get_confidence());
-        printf("size%d", clawsensor.get_object_size());
+        printf("size%d\n", clawsensor.get_object_size());
+
 
         // wonky drive
         int dir = master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_Y);
@@ -246,6 +247,9 @@ void opcontrol() {
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
             closeclaw();
         }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+            toggles.move(127);
+        }
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
@@ -254,19 +258,20 @@ void opcontrol() {
             rightliftmotor.move(-127);
             lefttliftmotor.move(-127);
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
             autonright();
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
             autonleft(1);
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
             sensortesty = !sensortesty;
 
         }
         else{
             rightliftmotor.move(0);
             lefttliftmotor.move(0);
+            toggles.move(0);
         }
 
         if(sensortesty){
