@@ -9,7 +9,7 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup right_mg({10, 2, 8}, pros::MotorGearset::blue); //ports of the right side, blue cartridges
 pros::MotorGroup left_mg({-20, -14, -17}, pros::MotorGearset::blue); //negative means it spins the other way.
 
-pros:: MotorGroup toggles({12,13}, pros::MotorGearset::green);
+pros:: MotorGroup toggles({12,-13}, pros::MotorGearset::green);
 // port 15, 16 = bad
 // port 5 and 6 are bad?!
 // port 9 bad??
@@ -84,8 +84,8 @@ void initialize() {
     pros::lcd::print(0, "19109G");
     right_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
     left_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_BRAKE);
-    rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-    lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    rightliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    lefttliftmotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     piston.set_value(true);
     // rightliftmotor.set_zero_position();
@@ -283,8 +283,8 @@ void opcontrol() {
 
         // }
         else{
-            rightliftmotor.move(0);
-            lefttliftmotor.move(0);
+            rightliftmotor.move_velocity(0);
+            lefttliftmotor.move_velocity(0);
             toggles.move(0);
         }
 
