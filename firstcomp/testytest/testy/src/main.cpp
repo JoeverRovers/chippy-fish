@@ -145,7 +145,17 @@ void openclaw(){
 void closeclaw(){
     piston.set_value(false);
 }
-// might need to swap ,n ot sure
+
+void firstheight(){
+    // guestimation
+    rightliftmotor.move(127);
+    lefttliftmotor.move(127);
+    pros::delay(500);
+    rightliftmotor.move(0);
+    lefttliftmotor.move(0); 
+}
+
+// might need to swap pistons ,n ot sure
 
 
 void autontemplate() {
@@ -174,6 +184,32 @@ void autontemplate() {
 
 }
 
+// if left = 1, normal, else, left = -1
+void autonleft(int left){
+    chassis.setPose(-60,0,270);
+    chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
+    chassis.moveToPoint(-60,0,1000);
+    // pushes toggles again
+    chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
+    chassis.moveToPoint(-48,0,2000);
+
+    chassis.turnToHeading(270 - left*90,1200);
+
+    chassis.moveToPoint(-48,-14,2000);
+
+    firstheight();
+    openclaw();
+
+    chassis.moveToPoint(-48,-5,1000,{.forwards=false});
+
+    // the end
+
+}
+
+void autonright(){
+    autonleft(-1);
+}
+
 #pragma region real
 
 void opcontrol() { 
@@ -189,7 +225,7 @@ void opcontrol() {
         printf("confidence%d", clawsensor.get_confidence());
         printf("size%d", clawsensor.get_object_size());
 
-        // pros::lcd::print(3,"distance sensor : " + clawsensor.get());
+        // wonky drive
         int dir = master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_Y);
         int turn = master.get_analog(ANALOG_LEFT_X);
         
@@ -216,6 +252,12 @@ void opcontrol() {
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
             rightliftmotor.move(-127);
             lefttliftmotor.move(-127);
+        }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+            autonright();
+        }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
+            autonleft(1);
         }
         else{
             rightliftmotor.move(0);
