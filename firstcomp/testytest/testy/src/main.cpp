@@ -46,6 +46,7 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 );
 
 //calibrate this
+// I guestimate pid 
 lemlib::ControllerSettings lateral_controller(1, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               1, // derivative gain (kD)
@@ -193,6 +194,9 @@ void autonleft(int left){
     chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
     chassis.moveToPoint(-48,0,1500,{.forwards=false});
     pros::delay(300);
+    chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
+    chassis.moveToPoint(-48,0,1500,{.forwards=false});
+    pros::delay(300);
     // // pushes toggles again
     // chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
     // chassis.moveToPoint(-48,0,2000,{.forwards=false});
@@ -235,10 +239,10 @@ void opcontrol() {
         // pros::lcd::print(1,"right" + (int)(rightliftmotor.get_position()));
         // pros::lcd::print(2,"left" + (int)(lefttliftmotor.get_position()));
         // pros::lcd::print(2, std::to_string(rightliftmotor.get_position()));
-        printf("distance%d", clawsensor.get());
-        printf("confidence%d ", clawsensor.get_confidence());
-        printf("size%d ", clawsensor.get_object_size());
-        printf("lIFT Position: %lf\n",rightliftmotor.get_position());
+        // printf("distance%d", clawsensor.get());
+        // printf("confidence%d ", clawsensor.get_confidence());
+        // printf("size%d ", clawsensor.get_object_size());
+        // printf("lIFT Position: %lf\n",rightliftmotor.get_position());
         // printf("lIFT angle: %lf\n",spinny.get_angle());
 
         // wonky drive
@@ -269,18 +273,18 @@ void opcontrol() {
             lefttliftmotor.move(127);
         }
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-            rightliftmotor.move(-127);
-            lefttliftmotor.move(-127);
+            rightliftmotor.move(-100);
+            lefttliftmotor.move(-100);
         }
         else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
             PIDtuna();
         }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
-            autonright();
-        }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
-            autonleft(1);
-        }
+        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+        //     autonright();
+        // }
+        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+        //     autonleft(1);
+        // }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
         //     sensortesty = !sensortesty;
 
@@ -291,15 +295,15 @@ void opcontrol() {
             toggles.move(0);
         }
 
-        if(sensortesty){
-            if(clawsensor.get() < 40){
-                // 40 mm = 4 cm
-                closeclaw();
-            }
-            else{
-                openclaw();
-            }
-        }
+        // if(sensortesty){
+        //     if(clawsensor.get() < 40){
+        //         // 40 mm = 4 cm
+        //         closeclaw();
+        //     }
+        //     else{
+        //         openclaw();
+        //     }
+        // }
         pros::delay(20);
     }
 }
