@@ -21,7 +21,7 @@ pros::Rotation spinny(16); //odom wheel port
 pros::ADIDigitalOut piston('A'); //piston port
 
 pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
-pros::Motor lefttliftmotor(11, pros::MotorGearset::red); //red
+pros::Motor lefttliftmotor(15, pros::MotorGearset::red); //red
 
 
 // Configure drivetrain - we will need to calibrate this
@@ -35,7 +35,7 @@ lemlib::Drivetrain drivetrain(&left_mg,
 
 pros::Imu imu(4); //IMU port (inertial sensor)
 
-pros::Rotation odom(12); //odom wheel port
+pros::Rotation odom(-11); //odom wheel port
 // pros::Rotation liftrotationsensor(4); //rotation sensor
 lemlib::TrackingWheel vertical_tracking_wheel(&odom, lemlib::Omniwheel::NEW_2, 0.0, 1); //new_2 omniwheel used for odom I think
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
@@ -47,7 +47,7 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 
 //calibrate this
 // I guestimate pid 
-lemlib::ControllerSettings lateral_controller(1, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(1.5, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               1, // derivative gain (kD)
                                               3, // anti windup
@@ -207,7 +207,7 @@ void autonleft(int left){
     pros::delay(2000);
 
     firstheight();
-    openclaw();
+    // openclaw();
 
     pros::delay(2000);
     // chassis.moveToPoint(-48,-5,1000,{.forwards=false});
@@ -276,9 +276,9 @@ void opcontrol() {
             rightliftmotor.move(-100);
             lefttliftmotor.move(-100);
         }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-            PIDtuna();
-        }
+        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        //     PIDtuna();
+        // }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
         //     autonright();
         // }
