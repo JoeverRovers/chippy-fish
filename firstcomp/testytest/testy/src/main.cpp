@@ -153,9 +153,9 @@ void firstheight(){
     // guestimation
     rightliftmotor.move(127);
     lefttliftmotor.move(127);
-    pros::delay(500);
-    rightliftmotor.move(0);
-    lefttliftmotor.move(0); 
+    pros::delay(310);
+    rightliftmotor.move_velocity(0);
+    lefttliftmotor.move_velocity(0); 
 }
 
 // might need to swap pistons ,n ot sure
@@ -189,21 +189,24 @@ void autontemplate() {
 
 // if left = 1, normal, else, left = -1
 void autonleft(int left){
-    chassis.setPose(-60,0,270);
-    chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
-    chassis.moveToPoint(-60,0,1000);
-    // pushes toggles again
-    chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
-    chassis.moveToPoint(-48,0,2000);
+    chassis.setPose(-58,0,270);
+    chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
+    chassis.moveToPoint(-48,0,1500,{.forwards=false});
+    pros::delay(300);
+    // // pushes toggles again
+    // chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
+    // chassis.moveToPoint(-48,0,2000,{.forwards=false});
 
     chassis.turnToHeading(270 - left*90,1200);
 
     chassis.moveToPoint(-48,-14,2000);
+    pros::delay(2000);
 
     firstheight();
     openclaw();
 
-    chassis.moveToPoint(-48,-5,1000,{.forwards=false});
+    pros::delay(2000);
+    // chassis.moveToPoint(-48,-5,1000,{.forwards=false});
 
     // the end
 
