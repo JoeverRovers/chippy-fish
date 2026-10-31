@@ -206,10 +206,10 @@ void autonleft(int left){
     chassis.moveToPoint(-48,-14,2000);
     pros::delay(2000);
 
-    firstheight();
+    // firstheight();
     // openclaw();
 
-    pros::delay(2000);
+    // pros::delay(2000);
     // chassis.moveToPoint(-48,-5,1000,{.forwards=false});
 
     // the end
@@ -310,7 +310,7 @@ void opcontrol() {
 
 void autonomous() {
     // RMEMEER TO FIX THIS!!
-    autonleft(1);
+    autonleft(-1);
 }
 
 #pragma endregion real
