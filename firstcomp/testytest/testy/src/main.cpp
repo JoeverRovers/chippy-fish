@@ -259,16 +259,16 @@ void opcontrol() {
         //     pros::delay(2);
         //     }
         // }
-        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
             openclaw();
         }
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
             closeclaw();
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             toggles.move(127);
         }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
         }
