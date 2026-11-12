@@ -18,7 +18,7 @@ pros::Distance clawsensor(18);
 
 pros::Rotation spinny(16); //odom wheel port
 
-pros::ADIDigitalOut piston('A'); //piston port
+pros::adi::DigitalOut piston('A'); //piston port
 
 pros::Motor rightliftmotor(-1, pros::MotorGearset::red); // red
 pros::Motor lefttliftmotor(15, pros::MotorGearset::red); //red
@@ -273,8 +273,8 @@ void opcontrol() {
             lefttliftmotor.move(127);
         }
         else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-            rightliftmotor.move(-100);
-            lefttliftmotor.move(-100);
+            rightliftmotor.move(-67);
+            lefttliftmotor.move(-67);
         }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
         //     PIDtuna();
