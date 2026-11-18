@@ -268,6 +268,9 @@ void opcontrol() {
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
             toggles.move(127);
         }
+        else{
+            toggles.move(0);
+        }
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
             rightliftmotor.move(127);
             lefttliftmotor.move(127);
@@ -292,7 +295,6 @@ void opcontrol() {
         else{
             rightliftmotor.move_velocity(0);
             lefttliftmotor.move_velocity(0);
-            toggles.move(0);
         }
 
         // if(sensortesty){
