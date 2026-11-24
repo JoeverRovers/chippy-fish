@@ -230,6 +230,7 @@ void PIDtuna(){
 #pragma region real
 
 bool sensortesty = false;
+bool closedon = false;
 void opcontrol() { 
 
     while (true) {
@@ -296,7 +297,20 @@ void opcontrol() {
             rightliftmotor.move_velocity(0);
             lefttliftmotor.move_velocity(0);
         }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+            sensortesty = !sensortesty;
 
+        }
+        if(sensortesty){
+            if(clawsensor.get() < 30 && !closedon){
+                // 40 mm = 4 cm
+                closeclaw();
+            }
+            else{
+                openclaw();
+            }
+        }
+        pros::delay(20);
         // if(sensortesty){
         //     if(clawsensor.get() < 40){
         //         // 40 mm = 4 cm

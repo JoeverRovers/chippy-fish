@@ -289,24 +289,24 @@ void opcontrol() {
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
         //     autonleft(1);
         // }
-        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-        //     sensortesty = !sensortesty;
 
-        // }
         else{
             rightliftmotor.move_velocity(0);
             lefttliftmotor.move_velocity(0);
         }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+            sensortesty = !sensortesty;
 
-        // if(sensortesty){
-        //     if(clawsensor.get() < 40){
-        //         // 40 mm = 4 cm
-        //         closeclaw();
-        //     }
-        //     else{
-        //         openclaw();
-        //     }
-        // }
+        }
+        if(sensortesty){
+            if(clawsensor.get() < 40){
+                // 40 mm = 4 cm
+                closeclaw();
+            }
+            else{
+                openclaw();
+            }
+        }
         pros::delay(20);
     }
 }
