@@ -58,7 +58,6 @@ lemlib::ControllerSettings lateral_controller(1.5, // proportional gain (kP)
                                               20 // maximum acceleration (slew)
 );
 
-// :(
 lemlib::ControllerSettings angular_controller(3, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               10, // derivative gain (kD)
@@ -152,9 +151,18 @@ void closeclaw(){
 
 void firstheight(){
     // guestimation
-    rightliftmotor.move(127);
-    lefttliftmotor.move(127);
-    pros::delay(310);
+    rightliftmotor.move(100);
+    lefttliftmotor.move(100);
+    pros::delay(300);
+    rightliftmotor.move_velocity(0);
+    lefttliftmotor.move_velocity(0); 
+}
+
+void firstscoreheight(){
+    // guestimation
+    rightliftmotor.move(-30);
+    lefttliftmotor.move(-30);
+    pros::delay(180);
     rightliftmotor.move_velocity(0);
     lefttliftmotor.move_velocity(0); 
 }
@@ -220,6 +228,17 @@ void autonright(){
     autonleft(-1);
 }
 
+void testscorestuff(){
+    firstheight();
+    chassis.setPose(0,0,0);
+    chassis.moveToPoint(0,10,1500);
+    pros::delay(1500);
+    firstscoreheight();
+    pros::delay(100); 
+    openclaw();
+    
+}
+
 void PIDtuna(){
     // set position to x:0, y:0, heading:0
     chassis.setPose(0, 0, 0);
@@ -280,18 +299,14 @@ void opcontrol() {
             rightliftmotor.move(-67);
             lefttliftmotor.move(-67);
         }
-        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-        //     PIDtuna();
-        // }
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+            testscorestuff();
+        }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
         //     autonright();
         // }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
         //     autonleft(1);
-        // }
-        // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-        //     sensortesty = !sensortesty;
-
         // }
         else{
             rightliftmotor.move_velocity(0);
