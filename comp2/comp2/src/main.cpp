@@ -47,7 +47,7 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 
 //calibrate this
 // I guestimate pid 
-lemlib::ControllerSettings lateral_controller(1.5, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(2, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               1, // derivative gain (kD)
                                               3, // anti windup
@@ -198,12 +198,12 @@ void autontemplate() {
 
 // if left = 1, normal, else, left = -1
 void autonleft(int left){
-    chassis.setPose(-58,0,180);
+    chassis.setPose(-58,0,270);
     toggles.move(127);
     pros::delay(500);
     toggles.move(0);
 
-    chassis.turnToHeading(90, 1500);
+    // chassis.turnToHeading(90, 1500);
     pros::delay(2000);
     // chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
     // chassis.moveToPoint(-48,0,1500,{.forwards=false});
@@ -213,7 +213,7 @@ void autonleft(int left){
     // pros::delay(300);
     // // pushes toggles again
     // chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
-    chassis.moveToPoint(-48,0,2000);
+    chassis.moveToPoint(-48,0,2000,{.forwards=false});
 
     chassis.turnToHeading(270 - left*90,1200);
     pros::delay(1200);
@@ -321,14 +321,14 @@ void opcontrol() {
             rightliftmotor.move_velocity(0);
             lefttliftmotor.move_velocity(0);
         }
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-            testscorestuff();
-        }
+        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        //     testscorestuff();
+        // }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
             autonleft(1);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
-            PIDtuna();
+            autonleft(-1);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
             sensortesty = !sensortesty;
@@ -359,7 +359,7 @@ void opcontrol() {
 
 void autonomous() {
     // RMEMEER TO FIX THIS!!
-    autonleft(1);
+    autonleft(-1);
 }
 
 #pragma endregion real
