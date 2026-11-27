@@ -198,21 +198,32 @@ void autontemplate() {
 
 // if left = 1, normal, else, left = -1
 void autonleft(int left){
-    chassis.setPose(-58,0,270);
-    chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
-    chassis.moveToPoint(-48,0,1500,{.forwards=false});
-    pros::delay(300);
-    chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
-    chassis.moveToPoint(-48,0,1500,{.forwards=false});
-    pros::delay(300);
+    chassis.setPose(-58,0,180);
+    toggles.move(127);
+    pros::delay(500);
+    toggles.move(0);
+
+    chassis.turnToHeading(90, 1500);
+    pros::delay(2000);
+    // chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
+    // chassis.moveToPoint(-48,0,1500,{.forwards=false});
+    // pros::delay(300);
+    // chassis.moveToPoint(-61,0,2000,{.minSpeed=80});
+    // chassis.moveToPoint(-48,0,1500,{.forwards=false});
+    // pros::delay(300);
     // // pushes toggles again
     // chassis.moveToPoint(-64,0,1000,{.minSpeed=80});
-    // chassis.moveToPoint(-48,0,2000,{.forwards=false});
+    chassis.moveToPoint(-48,0,2000);
 
     chassis.turnToHeading(270 - left*90,1200);
-
-    chassis.moveToPoint(-48,-14,2000);
+    pros::delay(1200);
+    chassis.moveToPoint(-48,-24,2000);
+    firstheight();
     pros::delay(2000);
+    firstscoreheight();
+    pros::delay(180);
+    openclaw();
+
 
     // firstheight();
     // openclaw();
@@ -264,6 +275,7 @@ void opcontrol() {
         // printf("size%d ", clawsensor.get_object_size());
         // printf("lIFT Position: %lf\n",rightliftmotor.get_position());
         // printf("lIFT angle: %lf\n",spinny.get_angle());
+        printf("toggles positions%d", toggles.get_position());
 
         // wonky drive
         int dir = master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_Y);
@@ -299,9 +311,6 @@ void opcontrol() {
             rightliftmotor.move(-67);
             lefttliftmotor.move(-67);
         }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-            testscorestuff();
-        }
         // else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
         //     autonright();
         // }
@@ -311,6 +320,15 @@ void opcontrol() {
         else{
             rightliftmotor.move_velocity(0);
             lefttliftmotor.move_velocity(0);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+            testscorestuff();
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+            autonleft(1);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+            PIDtuna();
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
             sensortesty = !sensortesty;
@@ -341,7 +359,7 @@ void opcontrol() {
 
 void autonomous() {
     // RMEMEER TO FIX THIS!!
-    autonleft(-1);
+    autonleft(1);
 }
 
 #pragma endregion real
